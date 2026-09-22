@@ -1,0 +1,47 @@
+using System;
+
+public class IdadeInvalidaException : Exception
+{
+    public IdadeInvalidaException(string mensagem)
+        : base(mensagem)
+    {
+    }
+}
+
+public class Pessoa
+{
+    public string Nome { get; set; }
+    public int Idade { get; set; }
+
+    public Pessoa(string nome, int idade)
+    {
+        if (idade < 0 || idade > 120)
+        {
+            throw new IdadeInvalidaException(
+                "Idade inválida. A idade deve estar entre 0 e 120 anos."
+            );
+        }
+
+        Nome = nome;
+        Idade = idade;
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        try
+        {
+            Pessoa pessoa = new Pessoa("João", 100);
+
+            Console.WriteLine($"Nome: {pessoa.Nome}");
+            Console.WriteLine($"Idade: {pessoa.Idade}");
+        }
+        catch (IdadeInvalidaException ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+    }
+}
+
