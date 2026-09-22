@@ -1,0 +1,55 @@
+using System;
+public class UsuarioNaoAutenticadoException : Exception
+{
+    public UsuarioNaoAutenticadoException(string mensagem)
+        : base(mensagem)
+    {
+    }
+}
+
+public class Sistema
+{
+    private bool autenticado = false;
+
+    public void Login(string usuario, string senha)
+    {
+        if (usuario == "admin" && senha == "1234")
+        {
+            autenticado = true;
+            Console.WriteLine("Login realizado com sucesso!");
+        }
+        else
+        {
+            Console.WriteLine("Usuário ou senha incorretos.");
+        }
+    }
+
+    public void AcessarRecurso()
+    {
+        if (!autenticado)
+        {
+            throw new UsuarioNaoAutenticadoException(
+                "Acesso negado. O usuário não está autenticado."
+            );
+        }
+
+        Console.WriteLine("Recurso acessado com sucesso!");
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        Sistema sistema = new Sistema();
+
+        try
+        {
+            sistema.AcessarRecurso();
+        }
+        catch (UsuarioNaoAutenticadoException ex)
+        {
+            Console.WriteLine("Erro: " + ex.Message);
+        }
+    }
+}
